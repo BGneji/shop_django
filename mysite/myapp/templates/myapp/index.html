@@ -9,7 +9,17 @@
 </head>
 <body>
 <h2>This is index template </h2>
-<h2></h2>
+
+<div>
+    <div>
+        <div class="row">
+            <img class="img_shop" src="{% static 'myapp/images/free-icon-shop-cart.png' %}" alt="logo">
+            <span class="text-lg">Pro Shop</span>
+        </div>
+    </div>
+</div>
+
+
 <h2>
     {% for item in items %}
 <!--    <a href="/myapp/hello/{{item.id}}">-->
