@@ -9,6 +9,7 @@
 <!--    <a href="/myapp/hello/{{item.id}}">-->
     <a href="{% url 'myapp:detail' item.id %}">
     id: {{item.id}} | Имя: {{item.name}} | цена: {{item.price}} {{item.description}}</br>
+        <img src="{{item.image.url}}" alt="">
     </a>
     {% endfor %}
 </h2>
