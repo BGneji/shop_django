@@ -120,7 +120,7 @@ strong {
   font-weight: bolder;
 }
 
-.bordernone{
+.bordernone, input{
     outline: none;
 }
 
