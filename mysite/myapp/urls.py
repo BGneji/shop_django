@@ -8,6 +8,7 @@ urlpatterns = [
     path('', views.index),
     path('<int:my_id>/', views.indexItem, name='detail'),
     path('add_item/', views.add_item, name='add_item'),
+    path('update_item/<int:my_id>/', views.update_item, name='update_item'),
 
 
 ]
