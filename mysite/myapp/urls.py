@@ -7,5 +7,7 @@ urlpatterns = [
     # http://127.0.0.1:8000/myapp/hello/
     path('', views.index),
     path('<int:my_id>/', views.indexItem, name='detail'),
+    path('add_item/', views.add_item, name='add_item'),
+
 
 ]
