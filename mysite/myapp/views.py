@@ -20,6 +20,7 @@ class ProductListView(ListView):
     model = Product
     template_name = 'myapp/index.html'
     context_object_name = 'items'
+    paginate_by = 2
 
 # сделано через калассы
 # def indexItem(request, my_id):
@@ -85,6 +86,7 @@ def update_item(request, my_id):
 class ProductDeleteView(DeleteView):
     model = Product
     success_url = reverse_lazy('myapp:index')
+
 
 
 
