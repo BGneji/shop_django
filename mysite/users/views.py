@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from .forms import NewUserForm
@@ -7,6 +8,7 @@ from .models import Profile
 
 
 def register(request):
+    """Регестрация пользователя"""
     if request.method == "POST":
         form = NewUserForm(request.POST)
         if form.is_valid():
@@ -20,6 +22,7 @@ def register(request):
 
 @login_required
 def profile(request):
+    """Профиль пользователя"""
     if request.method == "POST":
         contact_number = request.POST.get("number")
         image = request.FILES["upload"]
@@ -27,4 +30,16 @@ def profile(request):
         profile = Profile(user=user, contact_number=contact_number, image=image)
         profile.save()
     return render(request, "users/profile.html")
+
+
+def seller_profile(request, id):
+    """Информация о продавце"""
+    seller = User.objects.get(id=id)
+    context = {
+        'seller':seller
+    }
+    return render(request, 'users/seller_profile.html', context)
+
+
+
 
