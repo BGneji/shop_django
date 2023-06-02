@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse_lazy
@@ -10,8 +11,13 @@ from django.views.generic.edit import DeleteView
 # сделано через калассы
 # def index(request):
 #     items = Product.objects.all()
+#     item_name = request.GET.get('search')
+#     if item_name != '' and item_name is not None:
+#         items = items.filter(name__icontains=item_name)
+#
 #     context = {
-#         'items': items
+#         'items': items,
+#         'item_name': item_name
 #     }
 #     return render(request, "myapp/index.html", context)
 
@@ -21,6 +27,23 @@ class ProductListView(ListView):
     template_name = 'myapp/index.html'
     context_object_name = 'items'
     paginate_by = 2
+
+
+    # поиск по продуктам
+    def get_queryset(self):
+        search_item = self.request.GET.get('search')
+        if search_item != '' and search_item is not None:
+            item_name = Product.objects.filter(name__icontains=search_item)
+            return item_name
+        else:
+            items = Product.objects.all()
+            return items
+
+
+
+
+
+
 
 # сделано через калассы
 # def indexItem(request, my_id):
@@ -35,6 +58,8 @@ class ProductDetailView(DetailView):
     model = Product
     template_name = 'myapp/detail.html'
     context_object_name = 'item'
+
+
 
 
 @login_required
