@@ -3,13 +3,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseNotFound, JsonResponse
 from django.urls import reverse_lazy, reverse
 
-from .models import Product
+from .models import Product, OrderDetail
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import DeleteView
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import json
+import stripe
 
 # сделано через калассы
 # def index(request):
@@ -122,5 +123,40 @@ class ProductDeleteView(DeleteView):
     success_url = reverse_lazy('myapp:index')
 
 
+@csrf_exempt
+def create_checkout_session(request, id):
+    product = get_object_or_404(Product, pk=id)
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    checkout_session = stripe.checkout.Session.create(
+        payment_method_types=["card"],
+        line_items=[
+            {
+                "price_data": {
+                    "currency": "usd",
+                    "product_data": {
+                        "name": product.name,
+                    },
+                    "unit_amount": int(product.price * 100),
+                },
+                "quantity": 1,
+            }
+        ],
+        mode="payment",
+        success_url=request.build_absolute_uri(reverse("myapp:success"))
+        + "?session_id={CHECKOUT_SESSION_ID}",
+        cancel_url=request.build_absolute_uri(reverse("myapp:failed")),
+    )
 
+    # OrderDetail.objects.create(
+    #     customer_email=email,
+    #     product=product, ......
+    # )
 
+    order = OrderDetail()
+    order.product = product
+    order.stripe_payment_intent = checkout_session["payment_intent"]
+    order.amount = int(product.price * 100)
+    order.save()
+
+    # return JsonResponse({'data': checkout_session})
+    return JsonResponse({"sessionId": checkout_session.id})
