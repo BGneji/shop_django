@@ -132,3 +132,10 @@ LOGIN_REDIRECT_URL = 'myapp:index'
 # если не залогинен то будешь перенаправлен на страницу аутентификации
 LOGIN_URL = 'user:login'
 LOGOUT_REDIRECT_URL = 'myapp:index'
+
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51NEsdMJkf08wh3T8Sm8aFyPx6w4F7wmTWWC2CFbW0ckcFTFHoI39skXyP9MYJENCmbJMDFQFETv2azFreopvTiAL001LLQ'
+STRIPE_SECRET_KEY = 'sk_test_51NEsdMJkf08wh3T8sapxpxAsu0plcVPZb5AEtevCk4ei7fMznNYhpcZqZ2Y6ZuIgJALW1iiliBmy1jkPYbDM6HeV00D2mY'
+
+
+
+

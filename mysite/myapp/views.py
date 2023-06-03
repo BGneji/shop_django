@@ -1,12 +1,15 @@
 from django.db.models import Q
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.urls import reverse_lazy
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseNotFound, JsonResponse
+from django.urls import reverse_lazy, reverse
 
 from .models import Product
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import DeleteView
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 # сделано через калассы
 # def index(request):
@@ -26,7 +29,7 @@ class ProductListView(ListView):
     model = Product
     template_name = 'myapp/index.html'
     context_object_name = 'items'
-    paginate_by = 2
+    paginate_by = 3
 
 
     # поиск по продуктам
@@ -58,6 +61,12 @@ class ProductDetailView(DetailView):
     model = Product
     template_name = 'myapp/detail.html'
     context_object_name = 'item'
+    pk_url_kwarg = 'pk'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductDetailView, self).get_context_data(**kwargs)
+        context['stripe_publishable'] = settings.STRIPE_PUBLISHABLE_KEY
+        return context
 
 
 
