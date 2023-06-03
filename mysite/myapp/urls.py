@@ -4,7 +4,7 @@ from . import views
 from .views import ProductListView, ProductDetailView, ProductDeleteView, PaymentSuccessView, PaymentFailedView, \
     create_checkout_session
 
-app_name = "myapp"
+app_name = " "
 
 urlpatterns = [
     # http://127.0.0.1:8000/myapp/hello/
